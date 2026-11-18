@@ -36,7 +36,7 @@ pub impl[A] Default for Vector[A] with fn default() {
 /// ```mbt check
 /// test {
 ///   let v = @vector.singleton(42)
-///   @debug.assert_eq(v, @vector.from_array([42]))
+///   @debug.assert_eq(v, Vector([42]))
 ///   @test.assert_eq(v.length(), 1)
 /// }
 /// ```
@@ -107,13 +107,13 @@ pub fn[A] Vector::makei(
 /// ```mbt check
 /// test {
 ///   let v = @vector.Vector([1, 2, 3])
-///   @debug.assert_eq(v, @vector.from_array([1, 2, 3]))
+///   @debug.assert_eq(v, Vector([1, 2, 3]))
 /// }
 /// ```
-#alias(from_array)
-#as_free_fn(from_array)
-#alias(of, deprecated="Use from_array instead")
-#as_free_fn(of, deprecated="Use from_array instead")
+#alias(from_array, deprecated="Use `Vector(...)` instead")
+#as_free_fn(from_array, deprecated="Use `Vector(...)` instead")
+#alias(of, deprecated="Use `Vector(...)` instead")
+#as_free_fn(of, deprecated="Use `Vector(...)` instead")
 pub fn[A] Vector::Vector(arr : ArrayView[A]) -> Vector[A] {
   Vector::makei(arr.length(), i => arr[i])
 }
@@ -213,7 +213,7 @@ fn[A] Vector::tail_offset(self : Vector[A]) -> Int32 {
 /// # Examples
 /// ```mbt check
 /// test {
-///   let v = @vector.from_array([1, 2, 3, 4, 5])
+///   let v = @vector.Vector([1, 2, 3, 4, 5])
 ///   inspect(v[0], content="1")
 /// }
 /// ```
@@ -244,7 +244,7 @@ pub fn[A] Vector::at(self : Vector[A], index : Int32) -> A {
 ///
 /// ```mbt check
 /// test {
-///   let v = @vector.from_array([1, 2, 3])
+///   let v = @vector.Vector([1, 2, 3])
 ///   debug_inspect(v.get(1), content="Some(2)")
 ///   debug_inspect(v.get(-1), content="None")
 ///   debug_inspect(v.get(3), content="None")
@@ -271,7 +271,7 @@ pub fn[A] Vector::peek(self : Vector[A]) -> A? {
 /// # Example
 /// ```mbt check
 /// test {
-///   let v = @vector.from_array([1, 2, 3, 4, 5])
+///   let v = @vector.Vector([1, 2, 3, 4, 5])
 ///   inspect(v.contains(3), content="true")
 ///   inspect(v.contains(6), content="false")
 /// }
@@ -293,8 +293,8 @@ pub fn[A : Eq] Vector::contains(self : Vector[A], value : A) -> Bool {
 /// # Example
 /// ```mbt check
 /// test {
-///   let v = @vector.from_array([1, 2, 3, 4, 5])
-///   @debug.assert_eq(v.set(1, 10), @vector.from_array([1, 10, 3, 4, 5]))
+///   let v = @vector.Vector([1, 2, 3, 4, 5])
+///   @debug.assert_eq(v.set(1, 10), Vector([1, 10, 3, 4, 5]))
 /// }
 /// ```
 #owned(value)
@@ -336,8 +336,8 @@ pub fn[A] Vector::set(self : Vector[A], index : Int32, value : A) -> Vector[A] {
 /// # Example
 /// ```mbt check
 /// test {
-///   let v = @vector.from_array([1, 2, 3])
-///   @debug.assert_eq(v.push(4), @vector.from_array([1, 2, 3, 4]))
+///   let v = @vector.Vector([1, 2, 3])
+///   @debug.assert_eq(v.push(4), Vector([1, 2, 3, 4]))
 /// }
 /// ```
 #owned(value)
@@ -587,7 +587,7 @@ pub fn[A] Vector::iter(self : Vector[A]) -> Iter[A] {
 /// ```mbt check
 /// test {
 ///   let arr = []
-///   let v = @vector.from_array([1, 2, 3, 4, 5])
+///   let v = @vector.Vector([1, 2, 3, 4, 5])
 ///   v.each(e => arr.push(e))
 ///   @debug.assert_eq(arr, [1, 2, 3, 4, 5])
 /// }
@@ -604,7 +604,7 @@ pub fn[A] Vector::each(self : Vector[A], f : (A) -> Unit raise?) -> Unit raise? 
 /// ```mbt check
 /// test {
 ///   let arr = []
-///   let v = @vector.from_array([1, 2, 3, 4, 5])
+///   let v = @vector.Vector([1, 2, 3, 4, 5])
 ///   v.eachi((i, e) => arr.push(i * e))
 ///   @debug.assert_eq(arr, [0, 2, 6, 12, 20])
 /// }
@@ -626,7 +626,7 @@ pub fn[A] Vector::eachi(
 /// # Example
 /// ```mbt check
 /// test {
-///   let v = @vector.from_array([1, 2, 3, 4, 5])
+///   let v = @vector.Vector([1, 2, 3, 4, 5])
 ///   @test.assert_eq(v.fold((a, b) => a + b, init=0), 15)
 /// }
 /// ```
@@ -646,7 +646,7 @@ pub fn[A, B] Vector::fold(
 /// # Example
 /// ```mbt check
 /// test {
-///   let v = @vector.from_array([1, 2, 3, 4, 5])
+///   let v = @vector.Vector([1, 2, 3, 4, 5])
 ///   @test.assert_eq(v.rev_fold((a, b) => a + b, init=0), 15)
 /// }
 /// ```
@@ -666,8 +666,8 @@ pub fn[A, B] Vector::rev_fold(
 /// # Example
 /// ```mbt check
 /// test {
-///   let v = @vector.from_array([1, 2, 3, 4, 5])
-///   @debug.assert_eq(v.map(e => e * 2), @vector.from_array([2, 4, 6, 8, 10]))
+///   let v = @vector.Vector([1, 2, 3, 4, 5])
+///   @debug.assert_eq(v.map(e => e * 2), Vector([2, 4, 6, 8, 10]))
 /// }
 /// ```
 pub fn[A, B] Vector::map(
@@ -683,8 +683,8 @@ pub fn[A, B] Vector::map(
 /// # Example
 /// ```mbt check
 /// test {
-///   let v = @vector.from_array([1, 2, 3, 4, 5])
-///   @debug.assert_eq(v.filter(x => x % 2 == 0), @vector.from_array([2, 4]))
+///   let v = @vector.Vector([1, 2, 3, 4, 5])
+///   @debug.assert_eq(v.filter(x => x % 2 == 0), Vector([2, 4]))
 /// }
 /// ```
 pub fn[A] Vector::filter(
@@ -693,7 +693,7 @@ pub fn[A] Vector::filter(
 ) -> Vector[A] raise? {
   let arr : Array[A] = Array(capacity=self.size)
   self.each(value => if f(value) { arr.push(value) })
-  from_array(arr)
+  Vector(arr)
 }
 
 ///|
@@ -702,8 +702,8 @@ pub fn[A] Vector::filter(
 /// # Example
 /// ```mbt check
 /// test {
-///   let v = @vector.from_array([1, 2, 3, 4, 5])
-///   @debug.assert_eq(v.rev(), @vector.from_array([5, 4, 3, 2, 1]))
+///   let v = @vector.Vector([1, 2, 3, 4, 5])
+///   @debug.assert_eq(v.rev(), Vector([5, 4, 3, 2, 1]))
 /// }
 /// ```
 pub fn[A] Vector::rev(self : Vector[A]) -> Vector[A] {
@@ -712,7 +712,7 @@ pub fn[A] Vector::rev(self : Vector[A]) -> Vector[A] {
   } else {
     let arr = Array::make(self.size, self[0])
     self.eachi((i, value) => arr[self.size - 1 - i] = value)
-    from_array(arr)
+    Vector(arr)
   }
 }
 
@@ -777,7 +777,7 @@ pub impl[A : @json.FromJson] @json.FromJson for Vector[A] with fn from_json(
   for i, value in arr {
     values.push(A::from_json(value, path.add_index(i)))
   }
-  Vector::from_array(values)
+  Vector(values)
 }
 
 ///|
@@ -803,9 +803,9 @@ pub impl[A : @json.FromJson] @json.FromJson for Vector[A] with fn from_json(
 ///
 /// ```mbt check
 /// test {
-///   let arr1 = @vector.from_array([1, 2, 3])
-///   let arr2 = @vector.from_array([1, 2, 4])
-///   let arr3 = @vector.from_array([1, 2])
+///   let arr1 = @vector.Vector([1, 2, 3])
+///   let arr2 = @vector.Vector([1, 2, 4])
+///   let arr3 = @vector.Vector([1, 2])
 ///   inspect(arr1.compare(arr2), content="-1") // arr1 < arr2
 ///   inspect(arr1.compare(arr3), content="1") // arr1 > arr3 (longer)
 ///   inspect(arr3.compare(arr1), content="-1") // arr3 < arr1 (shorter)
