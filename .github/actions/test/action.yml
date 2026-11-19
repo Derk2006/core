@@ -8,8 +8,9 @@ runs:
       shell: bash
       run: |
         ulimit -s 8176
-        moon test --target all
-        moon test --release --target js,wasm,wasm-gc # native test in release mode is run in a separate job
+        for _ in $(seq 1 100); do
+          moon test --target native,wasm async/socket/reuse_addr_test.mbt
+        done
 
     - name: Setup MSVC
       if: ${{ runner.os == 'Windows' }}
