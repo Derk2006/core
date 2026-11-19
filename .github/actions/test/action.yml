@@ -8,7 +8,7 @@ runs:
       shell: bash
       run: |
         ulimit -s 8176
-        for _ in $(seq 1 400); do
+        for _ in $(seq 1 1000); do
           moon test --target native,wasm async/socket/reuse_addr_test.mbt
         done
 
